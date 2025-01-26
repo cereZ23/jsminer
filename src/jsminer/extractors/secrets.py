@@ -2,7 +2,7 @@
 
 from jsminer.core.models import Finding, FindingType
 from jsminer.extractors.base import BaseExtractor
-from jsminer.patterns import API_KEY_PATTERNS, SECRET_PATTERNS, CREDENTIAL_PATTERNS
+from jsminer.patterns import API_KEY_PATTERNS, CREDENTIAL_PATTERNS, SECRET_PATTERNS
 
 
 class SecretExtractor(BaseExtractor):
@@ -103,9 +103,24 @@ class SecretExtractor(BaseExtractor):
     def _is_false_positive(self, value: str) -> bool:
         """Check if a value is likely a false positive."""
         false_positives = {
-            "password", "secret", "token", "key", "test", "example",
-            "placeholder", "your_", "xxx", "...", "null", "undefined",
-            "true", "false", "none", "empty", "default", "sample",
+            "password",
+            "secret",
+            "token",
+            "key",
+            "test",
+            "example",
+            "placeholder",
+            "your_",
+            "xxx",
+            "...",
+            "null",
+            "undefined",
+            "true",
+            "false",
+            "none",
+            "empty",
+            "default",
+            "sample",
         }
         value_lower = value.lower()
         return any(fp in value_lower for fp in false_positives) or len(value) < 6

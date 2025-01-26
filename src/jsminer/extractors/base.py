@@ -25,7 +25,9 @@ class BaseExtractor(ABC):
         """Get line number for a match position."""
         return content[:match_start].count("\n") + 1
 
-    def _get_context(self, content: str, match_start: int, match_end: int, context_chars: int = 50) -> str:
+    def _get_context(
+        self, content: str, match_start: int, match_end: int, context_chars: int = 50
+    ) -> str:
         """Get surrounding context for a match."""
         start = max(0, match_start - context_chars)
         end = min(len(content), match_end + context_chars)
