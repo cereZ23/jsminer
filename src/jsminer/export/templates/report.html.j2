@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSMiner Report</title>
+    <style>
+        :root {
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
+            --text-primary: #eee;
+            --text-secondary: #888;
+            --accent-red: #e94560;
+            --accent-orange: #f39c12;
+            --accent-yellow: #f1c40f;
+            --accent-green: #27ae60;
+            --accent-blue: #3498db;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { color: var(--accent-blue); margin-bottom: 10px; }
+        h2 { color: var(--text-primary); margin: 30px 0 15px; border-bottom: 2px solid var(--accent-blue); padding-bottom: 10px; }
+        h3 { color: var(--text-secondary); margin: 20px 0 10px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header p { color: var(--text-secondary); }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--accent-blue);
+        }
+        .stat-card .label { color: var(--text-secondary); font-size: 0.9em; }
+        .stat-card.critical .value { color: var(--accent-red); }
+        .stat-card.high .value { color: var(--accent-orange); }
+        .findings-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .findings-table th, .findings-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+        .findings-table th {
+            background: rgba(52, 152, 219, 0.2);
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+        .findings-table tr:hover { background: rgba(255,255,255,0.05); }
+        .severity {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .severity.critical { background: var(--accent-red); color: white; }
+        .severity.high { background: var(--accent-orange); color: white; }
+        .severity.medium { background: var(--accent-yellow); color: #333; }
+        .severity.low { background: var(--accent-green); color: white; }
+        .severity.info { background: var(--accent-blue); color: white; }
+        .finding-type {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            background: rgba(255,255,255,0.1);
+        }
+        .value-cell {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            word-break: break-all;
+            max-width: 400px;
+        }
+        .context {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            font-family: monospace;
+        }
+        .source-link {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-size: 0.85em;
+        }
+        .source-link:hover { text-decoration: underline; }
+        .no-findings {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>JSMiner Report</h1>
+            <p>JavaScript Security Analysis</p>
+        </div>
+
+        {% if is_single %}
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="value">{{ result.stats.js_files }}</div>
+                <div class="label">JS Files</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">{{ result.stats.total_findings }}</div>
+                <div class="label">Findings</div>
+            </div>
+            <div class="stat-card critical">
+                <div class="value">{{ result.stats.critical }}</div>
+                <div class="label">Critical</div>
+            </div>
+            <div class="stat-card high">
+                <div class="value">{{ result.stats.high }}</div>
+                <div class="label">High</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">{{ result.stats.endpoints }}</div>
+                <div class="label">Endpoints</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">{{ result.stats.api_keys }}</div>
+                <div class="label">API Keys</div>
+            </div>
+        </div>
+        {% else %}
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="value">{{ total_stats.targets }}</div>
+                <div class="label">Targets</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">{{ total_stats.js_files }}</div>
+                <div class="label">JS Files</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">{{ total_stats.findings }}</div>
+                <div class="label">Findings</div>
+            </div>
+            <div class="stat-card critical">
+                <div class="value">{{ total_stats.critical }}</div>
+                <div class="label">Critical</div>
+            </div>
+            <div class="stat-card high">
+                <div class="value">{{ total_stats.high }}</div>
+                <div class="label">High</div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% for scan in results %}
+        <h2>{{ scan.target }}</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">
+            Scanned: {{ scan.scan_time.strftime('%Y-%m-%d %H:%M:%S') }} |
+            JS Files: {{ scan.js_files|length }} |
+            Findings: {{ scan.findings|length }}
+        </p>
+
+        {% if scan.findings %}
+        <table class="findings-table">
+            <thead>
+                <tr>
+                    <th>Severity</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Source</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for finding in scan.findings|sort(attribute='severity.value') %}
+                <tr>
+                    <td><span class="severity {{ finding.severity.value }}">{{ finding.severity.value }}</span></td>
+                    <td><span class="finding-type">{{ finding.type.value }}</span>
+                        {% if finding.secret_type %}<br><small>{{ finding.secret_type.value }}</small>{% endif %}
+                    </td>
+                    <td class="value-cell">
+                        {{ finding.value }}
+                        {% if finding.context %}<div class="context">{{ finding.context[:100] }}...</div>{% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ finding.source_file }}" class="source-link" target="_blank">
+                            {{ finding.source_file.split('/')[-1][:30] }}
+                        </a>
+                        {% if finding.line_number %}<br><small>Line {{ finding.line_number }}</small>{% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="no-findings">No findings for this target</div>
+        {% endif %}
+        {% endfor %}
+
+        <div class="footer">
+            <p>Generated by JSMiner v1.0.0</p>
+        </div>
+    </div>
+</body>
+</html>

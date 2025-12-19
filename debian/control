@@ -1,0 +1,40 @@
+Source: jsminer
+Section: net
+Priority: optional
+Maintainer: Andrea Ceresoni <andrea.ceresoni@gmail.com>
+Build-Depends: debhelper-compat (= 13),
+               dh-python,
+               python3-all,
+               python3-setuptools,
+               python3-pip
+Standards-Version: 4.6.2
+Homepage: https://github.com/cereZ23/jsminer
+Vcs-Git: https://github.com/cereZ23/jsminer.git
+Vcs-Browser: https://github.com/cereZ23/jsminer
+Rules-Requires-Root: no
+
+Package: jsminer
+Architecture: all
+Depends: ${python3:Depends},
+         ${misc:Depends},
+         python3-aiohttp,
+         python3-bs4,
+         python3-click,
+         python3-rich,
+         python3-pydantic,
+         python3-jinja2,
+         python3-tldextract
+Description: JavaScript security mining tool for OSINT
+ JSMiner extracts endpoints, API keys, secrets, and sensitive URLs
+ from JavaScript files for bug bounty and security assessments.
+ .
+ Features:
+  - Endpoint extraction (hidden APIs, admin panels, internal routes)
+  - Secret detection (40+ types: AWS, Stripe, GitHub, JWT, etc.)
+  - URL discovery (internal, staging, dev environments)
+  - Async architecture with aiohttp
+  - Rich CLI with progress indicators
+  - HTML and JSON report export
+ .
+ This tool is useful for bug bounty hunters and security researchers
+ to identify sensitive information leaked in JavaScript files.

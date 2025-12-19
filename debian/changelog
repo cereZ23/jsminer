@@ -1,0 +1,11 @@
+jsminer (1.0.0-1) unstable; urgency=medium
+
+  * Initial release of JSMiner
+  * JavaScript security mining tool for OSINT
+  * Extract endpoints, API keys, secrets from JS files
+  * Async architecture with aiohttp
+  * Rich CLI with progress indicators
+  * HTML and JSON report export
+  * Detect 40+ types of secrets and API keys
+
+ -- Andrea Ceresoni <andrea.ceresoni@gmail.com>  Thu, 19 Dec 2024 15:00:00 +0100
