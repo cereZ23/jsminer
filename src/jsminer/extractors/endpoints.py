@@ -10,17 +10,50 @@ class EndpointExtractor(BaseExtractor):
 
     # High-value endpoint keywords
     HIGH_VALUE_KEYWORDS = {
-        "admin", "auth", "login", "token", "oauth", "api/v",
-        "graphql", "internal", "debug", "backup", "config",
-        "upload", "download", "export", "user", "account",
-        "password", "reset", "verify", "webhook", "callback",
+        "admin",
+        "auth",
+        "login",
+        "token",
+        "oauth",
+        "api/v",
+        "graphql",
+        "internal",
+        "debug",
+        "backup",
+        "config",
+        "upload",
+        "download",
+        "export",
+        "user",
+        "account",
+        "password",
+        "reset",
+        "verify",
+        "webhook",
+        "callback",
     }
 
     # Common false positive patterns
     FALSE_POSITIVES = {
-        "/static/", "/assets/", "/images/", "/img/", "/css/", "/js/",
-        "/fonts/", "/favicon", ".png", ".jpg", ".gif", ".svg", ".css",
-        ".js", ".map", ".woff", ".ttf", ".ico", "node_modules",
+        "/static/",
+        "/assets/",
+        "/images/",
+        "/img/",
+        "/css/",
+        "/js/",
+        "/fonts/",
+        "/favicon",
+        ".png",
+        ".jpg",
+        ".gif",
+        ".svg",
+        ".css",
+        ".js",
+        ".map",
+        ".woff",
+        ".ttf",
+        ".ico",
+        "node_modules",
     }
 
     def extract(self, content: str, source_file: str) -> list[Finding]:

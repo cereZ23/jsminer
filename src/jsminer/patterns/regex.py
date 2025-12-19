@@ -21,7 +21,10 @@ API_KEY_PATTERNS: list[PatternDef] = [
         0.95,
     ),
     (
-        re.compile(r"(?:aws.?secret|secret.?key)[\"'`]?\s*[:=]\s*[\"'`]([A-Za-z0-9/+=]{40})[\"'`]", re.IGNORECASE),
+        re.compile(
+            r"(?:aws.?secret|secret.?key)[\"'`]?\s*[:=]\s*[\"'`]([A-Za-z0-9/+=]{40})[\"'`]",
+            re.IGNORECASE,
+        ),
         SecretType.AWS_SECRET_KEY,
         Severity.CRITICAL,
         0.9,
@@ -34,7 +37,10 @@ API_KEY_PATTERNS: list[PatternDef] = [
         0.95,
     ),
     (
-        re.compile(r"(?:google|gcp|firebase).?api.?key[\"'`]?\s*[:=]\s*[\"'`]([A-Za-z0-9_-]{39})[\"'`]", re.IGNORECASE),
+        re.compile(
+            r"(?:google|gcp|firebase).?api.?key[\"'`]?\s*[:=]\s*[\"'`]([A-Za-z0-9_-]{39})[\"'`]",
+            re.IGNORECASE,
+        ),
         SecretType.GOOGLE_API_KEY,
         Severity.HIGH,
         0.85,
@@ -85,7 +91,9 @@ API_KEY_PATTERNS: list[PatternDef] = [
         0.95,
     ),
     (
-        re.compile(r"https://hooks\.slack\.com/services/T[a-zA-Z0-9_]+/B[a-zA-Z0-9_]+/[a-zA-Z0-9_]+"),
+        re.compile(
+            r"https://hooks\.slack\.com/services/T[a-zA-Z0-9_]+/B[a-zA-Z0-9_]+/[a-zA-Z0-9_]+"
+        ),
         SecretType.SLACK_WEBHOOK,
         Severity.HIGH,
         0.95,
@@ -140,14 +148,20 @@ API_KEY_PATTERNS: list[PatternDef] = [
     ),
     # Twitter
     (
-        re.compile(r"(?:twitter|tw).?(?:api|consumer|access).?(?:key|token|secret)[\"'`]?\s*[:=]\s*[\"'`]([A-Za-z0-9]{25,50})[\"'`]", re.IGNORECASE),
+        re.compile(
+            r"(?:twitter|tw).?(?:api|consumer|access).?(?:key|token|secret)[\"'`]?\s*[:=]\s*[\"'`]([A-Za-z0-9]{25,50})[\"'`]",
+            re.IGNORECASE,
+        ),
         SecretType.TWITTER_TOKEN,
         Severity.HIGH,
         0.7,
     ),
     # Generic API key patterns
     (
-        re.compile(r"(?:api[_-]?key|apikey|api[_-]?secret)[\"'`]?\s*[:=]\s*[\"'`]([A-Za-z0-9_-]{20,64})[\"'`]", re.IGNORECASE),
+        re.compile(
+            r"(?:api[_-]?key|apikey|api[_-]?secret)[\"'`]?\s*[:=]\s*[\"'`]([A-Za-z0-9_-]{20,64})[\"'`]",
+            re.IGNORECASE,
+        ),
         SecretType.API_KEY_GENERIC,
         Severity.MEDIUM,
         0.6,
@@ -218,14 +232,19 @@ SECRET_PATTERNS: list[PatternDef] = [
     ),
     # Password patterns
     (
-        re.compile(r"(?:password|passwd|pwd)[\"'`]?\s*[:=]\s*[\"'`]([^\"'`\s]{8,64})[\"'`]", re.IGNORECASE),
+        re.compile(
+            r"(?:password|passwd|pwd)[\"'`]?\s*[:=]\s*[\"'`]([^\"'`\s]{8,64})[\"'`]", re.IGNORECASE
+        ),
         SecretType.PASSWORD,
         Severity.HIGH,
         0.6,
     ),
     # Secret patterns
     (
-        re.compile(r"(?:secret|token|auth)[\"'`]?\s*[:=]\s*[\"'`]([A-Za-z0-9_-]{16,64})[\"'`]", re.IGNORECASE),
+        re.compile(
+            r"(?:secret|token|auth)[\"'`]?\s*[:=]\s*[\"'`]([A-Za-z0-9_-]{16,64})[\"'`]",
+            re.IGNORECASE,
+        ),
         SecretType.SECRET_GENERIC,
         Severity.MEDIUM,
         0.5,
@@ -244,14 +263,21 @@ ENDPOINT_PATTERNS: list[re.Pattern[str]] = [
     # Relative paths
     re.compile(r"[\"'`](/[a-zA-Z0-9_-]+/[a-zA-Z0-9_/-]+)[\"'`]"),
     # Common API endpoints
-    re.compile(r"[\"'`](/(?:admin|auth|user|users|login|logout|register|signup|reset|verify|confirm|account|profile|settings|dashboard|api|graphql|webhook|callback|oauth|token|upload|download|export|import|search|query)[a-zA-Z0-9_/-]*)[\"'`]", re.IGNORECASE),
+    re.compile(
+        r"[\"'`](/(?:admin|auth|user|users|login|logout|register|signup|reset|verify|confirm|account|profile|settings|dashboard|api|graphql|webhook|callback|oauth|token|upload|download|export|import|search|query)[a-zA-Z0-9_/-]*)[\"'`]",
+        re.IGNORECASE,
+    ),
     # REST-like paths with IDs
     re.compile(r"[\"'`](/[a-zA-Z0-9_-]+/:\w+(?:/[a-zA-Z0-9_-]+)*)[\"'`]"),
     re.compile(r"[\"'`](/[a-zA-Z0-9_-]+/\{[^}]+\}(?:/[a-zA-Z0-9_-]+)*)[\"'`]"),
     # Fetch/axios patterns
-    re.compile(r"(?:fetch|axios|get|post|put|delete|patch)\s*\(\s*[\"'`]([^\"'`]+)[\"'`]", re.IGNORECASE),
+    re.compile(
+        r"(?:fetch|axios|get|post|put|delete|patch)\s*\(\s*[\"'`]([^\"'`]+)[\"'`]", re.IGNORECASE
+    ),
     # URL patterns in code
-    re.compile(r"(?:url|endpoint|path|route|href|src)\s*[:=]\s*[\"'`](/[^\"'`\s]+)[\"'`]", re.IGNORECASE),
+    re.compile(
+        r"(?:url|endpoint|path|route|href|src)\s*[:=]\s*[\"'`](/[^\"'`\s]+)[\"'`]", re.IGNORECASE
+    ),
 ]
 
 
@@ -261,13 +287,21 @@ ENDPOINT_PATTERNS: list[re.Pattern[str]] = [
 
 URL_PATTERNS: list[re.Pattern[str]] = [
     # Full URLs
-    re.compile(r"https?://[a-zA-Z0-9][-a-zA-Z0-9]*(?:\.[a-zA-Z0-9][-a-zA-Z0-9]*)+(?::[0-9]+)?(?:/[^\s\"'`<>]*)?"),
+    re.compile(
+        r"https?://[a-zA-Z0-9][-a-zA-Z0-9]*(?:\.[a-zA-Z0-9][-a-zA-Z0-9]*)+(?::[0-9]+)?(?:/[^\s\"'`<>]*)?"
+    ),
     # Internal/staging/dev URLs
-    re.compile(r"https?://(?:localhost|127\.0\.0\.1|0\.0\.0\.0|internal|staging|dev|test|uat|qa|preprod|admin|api|cdn|static)(?::[0-9]+)?[^\s\"'`<>]*", re.IGNORECASE),
+    re.compile(
+        r"https?://(?:localhost|127\.0\.0\.1|0\.0\.0\.0|internal|staging|dev|test|uat|qa|preprod|admin|api|cdn|static)(?::[0-9]+)?[^\s\"'`<>]*",
+        re.IGNORECASE,
+    ),
     # IP addresses with ports
     re.compile(r"https?://\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(?::[0-9]+)?[^\s\"'`<>]*"),
     # Subdomains patterns
-    re.compile(r"https?://[a-zA-Z0-9-]+\.(?:internal|local|corp|intranet|staging|dev|test)\.[a-zA-Z]{2,}[^\s\"'`<>]*", re.IGNORECASE),
+    re.compile(
+        r"https?://[a-zA-Z0-9-]+\.(?:internal|local|corp|intranet|staging|dev|test)\.[a-zA-Z]{2,}[^\s\"'`<>]*",
+        re.IGNORECASE,
+    ),
 ]
 
 
@@ -278,7 +312,10 @@ URL_PATTERNS: list[re.Pattern[str]] = [
 CREDENTIAL_PATTERNS: list[PatternDef] = [
     # Hardcoded credentials
     (
-        re.compile(r"(?:admin|root|user|guest)[\"'`]?\s*[:=]\s*[\"'`]([^\"'`\s]{4,32})[\"'`]", re.IGNORECASE),
+        re.compile(
+            r"(?:admin|root|user|guest)[\"'`]?\s*[:=]\s*[\"'`]([^\"'`\s]{4,32})[\"'`]",
+            re.IGNORECASE,
+        ),
         SecretType.PASSWORD,
         Severity.HIGH,
         0.5,
