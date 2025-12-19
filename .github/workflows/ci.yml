@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+          pip install pytest ruff
+
+      - name: Lint with ruff
+        run: |
+          ruff check src/
+
+      - name: Test CLI
+        run: |
+          jsminer --help
+          jsminer --version
+
+      - name: Test local file analysis
+        run: |
+          echo 'const API_KEY = "AKIAIOSFODNN7EXAMPLE";' > /tmp/test.js
+          jsminer -f /tmp/test.js -o /tmp/test_output.json
+          cat /tmp/test_output.json
+
+  debian-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Debian packaging tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dpkg-dev debhelper dh-python python3-all
+
+      - name: Validate Debian package structure
+        run: |
+          echo "=== Checking debian/ directory ==="
+          ls -la debian/
+
+          echo "=== Validating control file ==="
+          cat debian/control
+
+          echo "=== Validating rules file ==="
+          cat debian/rules
+
+          echo "=== Checking required files exist ==="
+          test -f debian/control && echo "✓ control exists"
+          test -f debian/rules && echo "✓ rules exists"
+          test -f debian/changelog && echo "✓ changelog exists"
+          test -f debian/copyright && echo "✓ copyright exists"
+          test -f debian/source/format && echo "✓ source/format exists"
+
+          echo "=== All Debian package files validated ==="
