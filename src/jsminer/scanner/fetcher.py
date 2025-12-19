@@ -1,7 +1,6 @@
 """Async JavaScript file fetcher."""
 
 import asyncio
-from urllib.parse import urljoin, urlparse
 
 import aiohttp
 
@@ -72,7 +71,7 @@ class JSFetcher:
                     status_code=response.status,
                 )
 
-        except asyncio.TimeoutError:
+        except TimeoutError:
             return JSFile(url=url, error="Timeout")
         except aiohttp.ClientError as e:
             return JSFile(url=url, error=str(e))

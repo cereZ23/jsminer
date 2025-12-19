@@ -12,18 +12,48 @@ class URLExtractor(BaseExtractor):
 
     # High-value URL patterns
     INTERESTING_PATTERNS = {
-        "internal", "staging", "dev", "test", "uat", "qa", "preprod",
-        "admin", "api", "localhost", "127.0.0.1", "0.0.0.0", "192.168",
-        "10.", "172.16", ".local", ".corp", ".intranet", "debug",
+        "internal",
+        "staging",
+        "dev",
+        "test",
+        "uat",
+        "qa",
+        "preprod",
+        "admin",
+        "api",
+        "localhost",
+        "127.0.0.1",
+        "0.0.0.0",
+        "192.168",
+        "10.",
+        "172.16",
+        ".local",
+        ".corp",
+        ".intranet",
+        "debug",
     }
 
     # Skip these domains
     SKIP_DOMAINS = {
-        "google.com", "googleapis.com", "gstatic.com", "google-analytics.com",
-        "facebook.com", "fbcdn.net", "twitter.com", "twimg.com",
-        "cloudflare.com", "jsdelivr.net", "unpkg.com", "cdnjs.cloudflare.com",
-        "jquery.com", "bootstrapcdn.com", "fontawesome.com",
-        "w3.org", "schema.org", "mozilla.org", "github.com",
+        "google.com",
+        "googleapis.com",
+        "gstatic.com",
+        "google-analytics.com",
+        "facebook.com",
+        "fbcdn.net",
+        "twitter.com",
+        "twimg.com",
+        "cloudflare.com",
+        "jsdelivr.net",
+        "unpkg.com",
+        "cdnjs.cloudflare.com",
+        "jquery.com",
+        "bootstrapcdn.com",
+        "fontawesome.com",
+        "w3.org",
+        "schema.org",
+        "mozilla.org",
+        "github.com",
     }
 
     def __init__(self, target_domain: str | None = None) -> None:
@@ -118,11 +148,17 @@ class URLExtractor(BaseExtractor):
         url_lower = url.lower()
 
         # Critical: internal/private networks
-        if any(p in url_lower for p in ["localhost", "127.0.0.1", "0.0.0.0", "192.168", "10.", "172.16"]):
+        if any(
+            p in url_lower
+            for p in ["localhost", "127.0.0.1", "0.0.0.0", "192.168", "10.", "172.16"]
+        ):
             return Severity.HIGH
 
         # High: staging/dev environments
-        if any(p in url_lower for p in ["staging", "dev", "test", "uat", "qa", "preprod", ".local", ".internal"]):
+        if any(
+            p in url_lower
+            for p in ["staging", "dev", "test", "uat", "qa", "preprod", ".local", ".internal"]
+        ):
             return Severity.MEDIUM
 
         # Medium: admin/api endpoints

@@ -1,6 +1,5 @@
 """Web crawler to find JavaScript files."""
 
-import asyncio
 import re
 from urllib.parse import urljoin, urlparse
 
@@ -111,10 +110,7 @@ class JSCrawler:
                     return True
 
             # Check for common JS patterns in path
-            if "/js/" in path or "/javascript/" in path:
-                return True
-
-            return False
+            return bool("/js/" in path or "/javascript/" in path)
         except Exception:
             return False
 
@@ -135,7 +131,9 @@ class JSCrawler:
                 path = match.group(1)
                 if path and not path.startswith("data:"):
                     full_url = urljoin(base_url, path)
-                    if self._is_js_url(full_url) or not any(c in path for c in ["(", ")", "{", "}"]):
+                    if self._is_js_url(full_url) or not any(
+                        c in path for c in ["(", ")", "{", "}"]
+                    ):
                         urls.add(full_url)
 
         return urls

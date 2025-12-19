@@ -33,23 +33,27 @@ BANNER = r"""
 
 @click.command()
 @click.option(
-    "-u", "--url",
+    "-u",
+    "--url",
     help="Single URL to analyze (webpage or .js file)",
 )
 @click.option(
-    "-l", "--list",
+    "-l",
+    "--list",
     "url_list",
     type=click.Path(exists=True),
     help="File containing list of URLs (one per line)",
 )
 @click.option(
-    "-f", "--file",
+    "-f",
+    "--file",
     "local_file",
     type=click.Path(exists=True),
     help="Local JavaScript file to analyze",
 )
 @click.option(
-    "-o", "--output",
+    "-o",
+    "--output",
     type=click.Path(),
     help="Output file (JSON or HTML based on extension)",
 )
@@ -60,7 +64,8 @@ BANNER = r"""
     help="Force JSON output format",
 )
 @click.option(
-    "-c", "--concurrent",
+    "-c",
+    "--concurrent",
     default=10,
     type=int,
     help="Maximum concurrent requests (default: 10)",
@@ -93,7 +98,8 @@ BANNER = r"""
     help="Disable URL extraction",
 )
 @click.option(
-    "-v", "--verbose",
+    "-v",
+    "--verbose",
     is_flag=True,
     help="Verbose output",
 )
@@ -242,19 +248,21 @@ def display_result(result: ScanResult, verbose: bool) -> None:
 
     summary = f"""
 [bold]Target:[/bold] {result.target}
-[bold]JS Files:[/bold] {stats['js_files']} ({stats['js_files_success']} successful)
-[bold]Total Findings:[/bold] {stats['total_findings']}
-[bold]Critical:[/bold] [red]{severity_counts['critical']}[/red]
-[bold]High:[/bold] [yellow]{severity_counts['high']}[/yellow]
-[bold]Endpoints:[/bold] {stats['endpoints']}
-[bold]API Keys:[/bold] {stats['api_keys']}
-[bold]Secrets:[/bold] {stats['secrets']}
-[bold]URLs:[/bold] {stats['urls']}
+[bold]JS Files:[/bold] {stats["js_files"]} ({stats["js_files_success"]} successful)
+[bold]Total Findings:[/bold] {stats["total_findings"]}
+[bold]Critical:[/bold] [red]{severity_counts["critical"]}[/red]
+[bold]High:[/bold] [yellow]{severity_counts["high"]}[/yellow]
+[bold]Endpoints:[/bold] {stats["endpoints"]}
+[bold]API Keys:[/bold] {stats["api_keys"]}
+[bold]Secrets:[/bold] {stats["secrets"]}
+[bold]URLs:[/bold] {stats["urls"]}
 """
     console.print(Panel(summary.strip(), title="[bold]Summary[/bold]", border_style="blue"))
 
     # Critical and high findings
-    important_findings = [f for f in result.findings if f.severity in (Severity.CRITICAL, Severity.HIGH)]
+    important_findings = [
+        f for f in result.findings if f.severity in (Severity.CRITICAL, Severity.HIGH)
+    ]
 
     if important_findings:
         table = Table(title="[bold red]Critical & High Findings[/bold red]")
