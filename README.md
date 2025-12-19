@@ -14,6 +14,12 @@ JavaScript security mining tool for bug bounty and security assessments. Extract
 
 ## Installation
 
+### Quick Install (from GitHub)
+
+```bash
+pip install git+https://github.com/cereZ23/jsminer.git
+```
+
 ### Using Virtual Environment (Recommended)
 
 ```bash
