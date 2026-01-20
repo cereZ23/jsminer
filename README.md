@@ -162,6 +162,3 @@ mypy src/jsminer
 
 GPL-2.0
 
-## Credits
-
-Developed by Andrea Ceresoni
